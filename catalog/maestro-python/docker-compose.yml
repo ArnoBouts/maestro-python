@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  maestro:
+    image: maestro-python
+    container_name: maestro-test
+    networks:
+      - ldap
+    ports:
+      - 8082:5000
+    environment:
+      - LDAP_HOST=ldap
+      - LDAP_PORT=389
+      - LDAP_ADMIN_DN=cn=admin,dc=home
+      - LDAP_ADMIN_PASSWORD=admin
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - maestro-python:/maestro/services
+
+  ldap:
+    image: no-cloud.fr/maestro/openldap
+    container_name: ldap-test
+    networks:
+      - ldap
+    environment:
+      - LDAP_ORGANIZATION=home
+      - LDAP_DOMAIN=home
+
+networks:
+  ldap:
+    driver: bridge
+
+volumes:
+  maestro-python:
+    external: true

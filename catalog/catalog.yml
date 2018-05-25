@@ -1,0 +1,63 @@
+services:
+  maestro:
+    display_name: maestro
+    updater: maestro-updater
+    required: true
+    params:
+      MAESTRO_DOMAIN:
+        required: true
+      LDAP_ADMIN_PASSWORD:
+        required: true
+    backup:
+      - service: backup
+        command: [create]
+
+  maestro-python:
+    display_name: maestro-python
+    updater: maestro-updater
+
+  traefik:
+    display_name: Traefik
+    required: true
+
+  ldap:
+    display_name: Ldap
+    required: true
+
+  kresus:
+    display_name: Kresus
+
+  prosody:
+    display_name: Prosody
+
+  jsxc:
+    display_name: Jsxc
+
+  nextcloud:
+    display_name: Nextcloud
+    ldap_group: nextcloud
+    params:
+      ADMIN_USER:
+        required: true
+      ADMIN_PASSWORD:
+        required: true
+
+  mail:
+    display_name: Mail Server
+    ldap_group: mail
+    install:
+      - service: mail
+        command: [maestro-generate-dkim-config]
+
+  guacamole:
+    display_name: Guacamole
+
+  firefox:
+    display_name: Firefox
+    ldap_group: firefox
+
+  pyload:
+    display_name: Pyload
+
+  test:
+    display_name: Test

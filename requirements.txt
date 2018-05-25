@@ -1,0 +1,27 @@
+-i https://pypi.org/simple
+cached-property==1.4.2
+certifi==2018.4.16
+chardet==3.0.4
+click==6.7
+docker-compose==1.21.1
+docker-pycreds==0.2.3
+docker==3.3.0
+dockerpty==0.4.1
+docopt==0.6.2
+flask==1.0.2
+idna==2.6
+itsdangerous==0.24
+jinja2==2.10
+jsonschema==2.6.0
+markupsafe==1.0
+pyasn1-modules==0.2.1
+pyasn1==0.4.2
+python-ldap==3.0.0
+pyyaml==3.12
+requests==2.18.4
+schedule==0.5.0
+six==1.11.0
+texttable==0.9.1
+urllib3==1.22
+websocket-client==0.47.0
+werkzeug==0.14.1

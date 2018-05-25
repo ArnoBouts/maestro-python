@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+
+  kresus:
+    image: bnjbvr/kresus
+    container_name: kresus
+    networks:
+      - kresus
+    volumes:
+      - kresus-data:/home/user/data
+    environment:
+      - KRESUS_EMAIL_HOST=mail.{{MAESTRO_DOMAIN}}
+      - KRESUS_EMAIL_PORT=587
+    labels:
+      - traefik.enable=false
+
+  kresus-nginx:
+    image: no-cloud.fr/maestro/kresus-nginx
+    container_name: kresus-nginx
+    networks:
+      - kresus
+      - ldap
+      - traefik
+    labels:
+      - traefik.port=80
+      - traefik.frontend.rule=Host:kresus.{{MAESTRO_DOMAIN}}
+      - traefik.frontend.passHostHeader=true
+      - traefik.frontend.entryPoints=http,https
+      - traefik.docker.network=traefik
+
+volumes:
+  kresus-data:
+    driver: local
+
+networks:
+  kresus:
+    driver: bridge
+  ldap:
+    external:
+      name: ldap
+  traefik:
+    external:
+      name: traefik

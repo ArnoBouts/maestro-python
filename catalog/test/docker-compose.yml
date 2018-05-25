@@ -1,0 +1,6 @@
+version: '2'
+
+services:
+  test:
+    image: no-cloud.fr/test
+    container_name: {{TEST_NAME}}
