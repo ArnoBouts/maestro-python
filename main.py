@@ -19,6 +19,9 @@ cancel = False
 log = logging.getLogger(__name__)
 console_handler = logging.StreamHandler(sys.stdout)
 
+formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s", "%Y-%m-%d %H:%M:%S")
+console_handler.setFormatter(formatter)
+
 root_logger = logging.getLogger()
 root_logger.addHandler(console_handler)
 root_logger.setLevel(logging.INFO)
@@ -33,8 +36,12 @@ logging.getLogger("schedule").propagate = False
 
 log.info("Starting Maestro")
 
+def up():
+    log.info("Update now !")
+    services.update()
+
 def update():
-    schedule.every(1).minutes.do(services.update)
+    schedule.every(5).minutes.do(up)
     while not cancel:
         schedule.run_pending()
         time.sleep(1)
@@ -67,7 +74,7 @@ threading.Thread(target=update).start()
 
 log.info("Start server")
 
-app.run(host='0.0.0.0', debug=True)
+app.run(host='0.0.0.0', debug=False)
 
 cancel = True
 
