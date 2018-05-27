@@ -33,6 +33,7 @@ services:
   acme:
     image: no-cloud.fr/maestro/acme
     container_name: acme
+    network_mode: "none"
     volumes:
       - acme:/acme
 
