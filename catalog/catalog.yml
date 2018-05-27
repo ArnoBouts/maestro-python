@@ -1,5 +1,5 @@
 services:
-  maestro:
+  maestro-python:
     display_name: maestro
     updater: maestro-updater
     required: true
@@ -14,10 +14,6 @@ services:
     backup:
       - service: backup
         command: [create]
-
-  maestro-python:
-    display_name: maestro-python
-    updater: maestro-updater
 
   traefik:
     display_name: Traefik

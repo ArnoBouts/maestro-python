@@ -58,7 +58,7 @@ def getRequiredServices():
     required = []
 
     for service in c['services']:
-        if service['required']:
-            required.append(service['name'])
+        if 'required' in c['services'][service] and c['services'][service]['required']:
+            required.append(service)
 
     return required
