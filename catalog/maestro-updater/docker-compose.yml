@@ -9,8 +9,8 @@ services:
       - --restart
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - maestro-python:/maestro/services
+      - maestro:/maestro/services
 
 volumes:
-  maestro-python:
+  maestro:
     external: true
