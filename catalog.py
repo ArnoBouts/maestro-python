@@ -23,6 +23,11 @@ def getComposeSha(name):
 
     return hashlib.sha256(compose).hexdigest()
 
+def getDepends(name):
+    if name in c['services'] and 'depends' in c['services'][name]:
+        return c['services'][name]['depends']
+    return []
+
 def getComposeFile(name):
 
     with open(w + "/catalog/" + name + "/docker-compose.yml", "r") as file:

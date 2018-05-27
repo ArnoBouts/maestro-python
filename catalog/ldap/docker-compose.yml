@@ -27,5 +27,5 @@ volumes:
 
 networks:
   ldap:
-    external:
-      name: ldap
+    driver: bridge
+    name: ldap

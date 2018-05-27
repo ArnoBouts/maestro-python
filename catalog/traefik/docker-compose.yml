@@ -42,5 +42,5 @@ volumes:
 
 networks:
   traefik:
-    external:
-      name: traefik
+    driver: bridge
+    name: traefik

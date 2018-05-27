@@ -3,6 +3,9 @@ services:
     display_name: maestro
     updater: maestro-updater
     required: true
+    depends:
+      - ldap
+      - traefik
     params:
       MAESTRO_DOMAIN:
         required: true

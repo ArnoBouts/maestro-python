@@ -86,6 +86,11 @@ def restart(service_name):
 def install(service):
     log.info('Install service %s', service['name'])
 
+    for dep in catalog.getDepends(service['name']):
+        if not dep in s['services']:
+            log.info('Depends on %s', dep)
+            install({'name': dep, 'params': {}})
+
     configure(service)
 
     s['services'][service['name']] = service
