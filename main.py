@@ -24,9 +24,9 @@ root_logger.addHandler(console_handler)
 root_logger.setLevel(logging.INFO)
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "hri", ["restart", "install"])
+    opts, args = getopt.getopt(sys.argv[1:], "hdri", ["debug", "restart", "install"])
 except getopt.GetoptError:
-    print('main.py -r -i')
+    print('main.py -d -r -i')
     sys.exit(2)
 
 logging.getLogger("schedule").propagate = False
@@ -53,6 +53,9 @@ for opt, arg in opts:
     if opt == '-h':
         print('main.py -r')
         sys.exit()
+    elif opt in ("-d", "--debug"):
+        log.info("Set log level DEBUG")
+        root_logger.setLevel(logging.DEBUG)
     elif opt in ("-r", "--restart"):
         services.restart('maestro')
         sys.exit()
