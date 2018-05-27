@@ -24,9 +24,9 @@ root_logger.addHandler(console_handler)
 root_logger.setLevel(logging.INFO)
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "hr", ["restart"])
+    opts, args = getopt.getopt(sys.argv[1:], "hri", ["restart", "install"])
 except getopt.GetoptError:
-    print('main.py -r')
+    print('main.py -r -i')
     sys.exit(2)
 
 logging.getLogger("schedule").propagate = False
@@ -55,6 +55,9 @@ for opt, arg in opts:
         sys.exit()
     elif opt in ("-r", "--restart"):
         services.restart('maestro-python')
+        sys.exit()
+    elif opt in ("-i", "--install"):
+        services.install_required()
         sys.exit()
 
 threading.Thread(target=update).start()

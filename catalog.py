@@ -48,3 +48,12 @@ def getUpdater(name):
     if name in c['services'] and 'updater' in c['services'][name]:
         return c['services'][name]['updater']
     return None
+
+def getRequiredServices():
+    required = []
+
+    for service in c['services']:
+        if service['required']:
+            required.append(service['name'])
+
+    return required

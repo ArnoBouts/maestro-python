@@ -148,3 +148,8 @@ def remove(service_name):
 
     save()
     return service
+
+def install_required():
+    for service in catalog.getRequiredServices():
+        if not service in s['services']:
+            install({'name': service, 'params': {}})
