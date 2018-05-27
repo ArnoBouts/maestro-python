@@ -54,7 +54,7 @@ for opt, arg in opts:
         print('main.py -r')
         sys.exit()
     elif opt in ("-r", "--restart"):
-        services.restart('maestro-python')
+        services.restart('maestro')
         sys.exit()
     elif opt in ("-i", "--install"):
         services.install_required()

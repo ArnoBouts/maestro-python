@@ -1,5 +1,5 @@
 services:
-  maestro-python:
+  maestro:
     display_name: maestro
     updater: maestro-updater
     required: true
