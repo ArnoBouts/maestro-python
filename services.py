@@ -79,7 +79,7 @@ def upgrade(service):
 def restart(service_name):
     service = s['services'][service_name]
 
-    comp.down(w, service, False)
+    comp.down(w, service, False, False)
     comp.up(w, service)
 
 
@@ -149,7 +149,7 @@ def getParamValue(service, param):
 def remove(service_name):
     service = s['services'].pop(service_name, None)
 
-    comp.down(w, service, True)
+    comp.down(w, service, True, True)
 
     save()
     return service

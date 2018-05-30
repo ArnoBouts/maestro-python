@@ -8,10 +8,10 @@ def up(w, service):
     project = compose.cli.command.get_project(w + '/services/' + service['name'])
     project.up(silent=True)
 
-def down(w, service, include_volumes):
+def down(w, service, remove_image_type, include_volumes):
     log.debug('Down ' + service['name'])
     project = compose.cli.command.get_project(w + '/services/' + service['name'])
-    project.down(remove_image_type=True, include_volumes=include_volumes)
+    project.down(remove_image_type=remove_image_type, include_volumes=include_volumes)
 
 def pull(w, service):
     log.debug('Pull ' + service['name'])
