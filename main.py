@@ -36,12 +36,8 @@ logging.getLogger("schedule").propagate = False
 
 log.info("Starting Maestro")
 
-def up():
-    log.info("Update now !")
-    services.update()
-
 def update():
-    schedule.every(5).minutes.do(up)
+    schedule.every(5).minutes.do(services.update)
     while not cancel:
         schedule.run_pending()
         time.sleep(1)
