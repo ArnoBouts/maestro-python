@@ -4,17 +4,17 @@ import logging
 log = logging.getLogger(__name__)
 
 def up(w, service):
-    log.info('up ' + service['name'])
+    log.debug('Up ' + service['name'])
     project = compose.cli.command.get_project(w + '/services/' + service['name'])
     project.up(silent=True)
 
 def down(w, service, include_volumes):
-    log.info('down ' + service['name'])
+    log.debug('Down ' + service['name'])
     project = compose.cli.command.get_project(w + '/services/' + service['name'])
     project.down(remove_image_type=True, include_volumes=include_volumes)
 
 def pull(w, service):
-    log.info('pull ' + service['name'])
+    log.debug('Pull ' + service['name'])
     project = compose.cli.command.get_project(w + '/services/' + service['name'])
     project.pull(silent=True)
 
