@@ -65,15 +65,15 @@ def upgrade(service):
     updater = catalog.getUpdater(service['name'])
 
     if updater is None:
-        comp.up(service)
+        comp.up(w, service)
         return
 
     if not updater in s['services']:
         install({'name': updater, 'params': {}})
         return
 
-    comp.pull(s['services'][updater])
-    comp.up(s['services'][updater])
+    comp.pull(w, s['services'][updater])
+    comp.up(w, s['services'][updater])
 
 
 def restart(service_name):
