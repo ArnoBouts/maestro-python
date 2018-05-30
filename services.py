@@ -102,6 +102,8 @@ def install(service):
 
 
 def configure(service):
+    service['params'] = computeParams(service, service['params'])
+
     sha = catalog.getComposeSha(service['name'])
 
     compose = catalog.getComposeFile(service['name'])
