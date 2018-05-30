@@ -51,13 +51,25 @@ def save():
 
 def update():
     log.debug('Update')
+    toComposeUpgrade = []
     toUpgrade = []
+
     for name in s['services']:
+
+        if checkComposeUpdate(s['services'][name]):
+            toComposeUpgrade.append(s['services'][name])
+
         comp.pull(w, s['services'][name])
         if(comp.checkImage(w, s['services'][name])):
             toUpgrade.append(s['services'][name])
+
+    for service in toComposeUpgrade:
+        composeUpgrade(service)
+
     for service in toUpgrade:
         upgrade(service)
+
+
 
 def upgrade(service):
     log.info('Upgrade service %s', service['name'])
@@ -75,12 +87,46 @@ def upgrade(service):
     comp.pull(w, s['services'][updater])
     comp.up(w, s['services'][updater])
 
+def checkComposeUpdate(service):
+    sha = catalog.getComposeSha(service['name'])
+    return service['checksum'] != sha
+
+def composeUpgrade(service):
+    log.info('Upgrade service %s compose', service['name'])
+
+    updater = catalog.getUpdater(service['name'])
+
+    if updater is None:
+        performComposeUpdate(service)
+
+    if not updater in s['services']:
+        install({'name': updater, 'params': {}})
+        return
+
+    comp.pull(w, s['services'][updater])
+    comp.up(w, s['services'][updater])
+
+def performComposeUpdate(service):
+    comp.down(w, service, False, False)
+    service['params'] = computeParams(service, service['params'])
+
+    configure(service)
+
+    comp.up(w, service)
+
+    save()
+
+    log.info('COMPOSE file of service %s updated', service['name'])
+
 
 def restart(service_name):
     service = s['services'][service_name]
 
-    comp.down(w, service, False, False)
-    comp.up(w, service)
+    if checkComposeUpdate(service):
+        performComposeUpdate(service)
+    else:
+        comp.down(w, service, False, False)
+        comp.up(w, service)
 
 
 def install(service):
@@ -104,7 +150,7 @@ def install(service):
 def configure(service):
     service['params'] = computeParams(service, service['params'])
 
-    sha = catalog.getComposeSha(service['name'])
+    service['checksum'] = catalog.getComposeSha(service['name'])
 
     compose = catalog.getComposeFile(service['name'])
 
