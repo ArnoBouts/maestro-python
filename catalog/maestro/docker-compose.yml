@@ -3,7 +3,7 @@ version: '2'
 services:
   maestro:
     image: no-cloud.fr/maestro-python
-    container_name: maestro-test
+    container_name: maestro
     networks:
       - ldap
       - traefik
