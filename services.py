@@ -9,6 +9,7 @@ import yaml
 import catalog
 import comp
 from maestro import app
+import xmpp
 
 log = logging.getLogger(__name__)
 
@@ -70,7 +71,6 @@ def update():
         upgrade(service)
 
 
-
 def upgrade(service):
     log.info('Upgrade service %s', service['name'])
 
@@ -86,6 +86,8 @@ def upgrade(service):
 
     comp.pull(w, s['services'][updater])
     comp.up(w, s['services'][updater])
+
+    xmpp.Send('%s upgraded' % (service['name']))
 
 def checkComposeUpdate(service):
     sha = catalog.getComposeSha(service['name'])
@@ -116,7 +118,9 @@ def performComposeUpdate(service):
 
     save()
 
-    log.info('COMPOSE file of service %s updated', service['name'])
+    log.info('Compose file of service %s updated', service['name'])
+
+    xmpp.Send('%s configuration updated' % (service['name']))
 
 
 def restart(service_name):
@@ -127,6 +131,7 @@ def restart(service_name):
     else:
         comp.down(w, service, False, False)
         comp.up(w, service)
+        xmpp.Send('%s upgraded' % (service['name']))
 
 
 def install(service):

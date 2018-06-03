@@ -1,3 +1,4 @@
+import asyncio
 from compose.cli.command import get_project
 from maestro import app
 import getopt
@@ -37,6 +38,9 @@ logging.getLogger("schedule").propagate = False
 log.info("Starting Maestro")
 
 def update():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
     schedule.every(5).minutes.do(services.update)
     while not cancel:
         schedule.run_pending()
