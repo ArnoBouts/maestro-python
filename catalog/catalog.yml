@@ -11,6 +11,14 @@ services:
         required: true
       LDAP_ADMIN_PASSWORD:
         required: true
+      MAESTRO_NOTIFY:
+        required: false
+      MAESTRO_NOTIFY_JID:
+        required: false
+      MAESTRO_NOTIFY_PASSWORD:
+        required: false
+      MAESTRO_NOTIFY_TO:
+        required: false
     backup:
       - service: backup
         command: [create]

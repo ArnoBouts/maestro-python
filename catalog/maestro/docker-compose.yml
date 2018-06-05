@@ -16,12 +16,32 @@ services:
       - LDAP_ADMIN_DN=cn=admin,dc=home
       - LDAP_ADMIN_PASSWORD={{LDAP_ADMIN_PASSWORD}}
       - MAESTRO_DOMAIN={{MAESTRO_DOMAIN}}
+      - NOTIFY={{MAESTRO_NOTIFY}}
+      - NOTIFY_JID={{MAESTRO_NOTIFY_JID}}
+      - NOTIFY_PASSWORD={{MAESTRO_NOTIFY_PASSWORD}}
+      - NOTIFY_TO={{MAESTRO_NOTIFY_TO}}
     labels:
       - traefik.port=5000
       - traefik.frontend.rule=Host:maestro.{{MAESTRO_DOMAIN}}
       - traefik.frontend.passHostHeader=true
       - traefik.frontend.entryPoints=http,https
       - traefik.docker.network=traefik
+
+  backup:
+    image: no-cloud.fr/maestro/borg
+    container_name: maestro-backup
+    volumes_from:
+      - maestro
+    env_file:
+      - ../backup.env
+    environment:
+      - SSHFS_REPO=maestro
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+    security_opt:
+      - apparmor:unconfined
 
 networks:
   ldap:
