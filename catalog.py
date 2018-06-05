@@ -43,9 +43,9 @@ def getServiceParam(name, param):
 
     if name in c['services'] and 'params' in c['services'][name] and param in c['services'][name]['params']:
         p = c['services'][name]['params'][param]
-        if p['required'] and p['default'] == "":
+        if p['required'] and 'default' not in p:
             return ("", False)
-        return (p['default'], True)
+        return (p['default'] if 'default' in p else "", True)
 
     return ("", False)
 
