@@ -36,6 +36,9 @@ services:
       - ../backup.env
     environment:
       - SSHFS_REPO=maestro
+      - ARCHIVE_NAME=maestro
+      - BACKUP_DIRS=/maestro/services
+      - EXTRACT_TO=/maestro/services/restore
     cap_add:
       - SYS_ADMIN
     devices:
