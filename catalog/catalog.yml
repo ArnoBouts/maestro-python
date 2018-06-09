@@ -22,6 +22,11 @@ services:
     backup:
       - service: backup
         command: [create]
+    restore:
+      - service: maestro
+        command: [rm, -rf, /maestro/services/*]
+      - service: backup
+        command: [extract]
 
   traefik:
     display_name: Traefik

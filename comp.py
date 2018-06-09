@@ -1,5 +1,8 @@
 import compose
 import logging
+import io
+
+from dockerpty.pty import PseudoTerminal, RunOperation
 
 log = logging.getLogger(__name__)
 
@@ -34,3 +37,41 @@ def checkImage(w, service):
                 uptodate = False
 
     return not uptodate
+
+class StringStream(io.StringIO):
+    def __init__(self):
+        io.StringIO.__init__(self)
+
+    def send(self, buffer):
+        self.write(str(buffer, 'utf-8'))
+
+
+def run (w, app, service_name, command, out=None, environment=[]):
+    project = compose.cli.command.get_project(w + '/services/' + app['name'])
+
+    service = project.get_service(service_name)
+
+    container = service.create_container(quiet=True, one_off=True, **{
+                'command': command,
+                'tty': False,
+                'stdin_open': False,
+                'detach': False,
+                'environment':environment
+            })
+
+    operation = RunOperation(
+        project.client,
+        container.id,
+        interactive=False,
+        logs=False,
+        stdout=out,
+    )
+    pty = PseudoTerminal(project.client, operation)
+    sockets = pty.sockets()
+    service.start_container(container)
+    pty.start(sockets)
+    exit_code = container.wait()
+
+    project.client.remove_container(container.id, force=True, v=True)
+
+    return exit_code

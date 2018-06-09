@@ -38,7 +38,7 @@ services:
       - SSHFS_REPO=maestro
       - ARCHIVE_NAME=maestro
       - BACKUP_DIRS=/maestro/services
-      - EXTRACT_TO=/maestro/services/restore
+      - EXTRACT_TO=/
     cap_add:
       - SYS_ADMIN
     devices:
