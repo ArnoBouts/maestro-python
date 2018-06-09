@@ -10,6 +10,7 @@ import threading
 import time
 
 import catalog
+import backup
 import groups
 import persons
 import services
@@ -41,6 +42,7 @@ def update():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
+    services.update()
     schedule.every(5).minutes.do(services.update)
     while not cancel:
         schedule.run_pending()
