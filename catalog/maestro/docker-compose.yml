@@ -2,7 +2,7 @@ version: '2'
 
 services:
   maestro:
-    image: no-cloud.fr/maestro-python
+    image: no-cloud.fr/maestro
     container_name: maestro
     networks:
       - ldap
