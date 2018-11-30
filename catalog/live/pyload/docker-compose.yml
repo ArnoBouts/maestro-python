@@ -13,7 +13,7 @@ services:
       - media:/media
     labels:
       - traefik.webinterface.port=8000
-      - traefik.webinterface.frontend.rule=Host:pyload.{{MAESTRO_DOMAIN}}
+      - traefik.webinterface.frontend.rule=Host:pyload.bouts.me
       - traefik.webinterface.frontend.passHostHeader=true
       - traefik.webinterface.frontend.entryPoints=http,https
 

@@ -3,6 +3,7 @@ version: '2'
 services:
 
   kresus:
+#    image: bnjbvr/kresus:latest
     image: bnjbvr/kresus-nightly:prod
     container_name: kresus
     networks:
@@ -10,8 +11,11 @@ services:
     volumes:
       - kresus-data:/home/user/data
     environment:
-      - KRESUS_EMAIL_HOST=mail.{{MAESTRO_DOMAIN}}
+      - KRESUS_EMAIL_HOST=mail.bouts.me
       - KRESUS_EMAIL_PORT=587
+      - KRESUS_EMAIL_FROM=maestro@bouts.me
+      - KRESUS_EMAIL_USER=maestro@bouts.me
+      - KRESUS_EMAIL_PASSWORD=maestro
     labels:
       - traefik.enable=false
 
@@ -24,7 +28,7 @@ services:
       - traefik
     labels:
       - traefik.port=80
-      - traefik.frontend.rule=Host:kresus.{{MAESTRO_DOMAIN}}
+      - traefik.frontend.rule=Host:kresus.bouts.me
       - traefik.frontend.passHostHeader=true
       - traefik.frontend.entryPoints=http,https
       - traefik.docker.network=traefik

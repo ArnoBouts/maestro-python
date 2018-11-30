@@ -4,7 +4,7 @@ services:
   mail:
     image: no-cloud.fr/maestro/mailserver:latest
     hostname: mail
-    domainname: {{MAESTRO_DOMAIN}}
+    domainname: bouts.me
     container_name: mail
     ports:
       - "25:25"
@@ -30,7 +30,7 @@ services:
       - LDAP_SERVER_HOST=ldap
       - LDAP_SEARCH_BASE=ou=people,dc=home
       - LDAP_BIND_DN=cn=admin,dc=home
-      - LDAP_BIND_PW={{LDAP_ADMIN_PASSWORD}}
+      - LDAP_BIND_PW=admin
       - LDAP_QUERY_FILTER_USER=(&(mail=%s)(&(objectClass=person)(memberof=cn=mail,ou=groups,dc=home)))
       - LDAP_QUERY_FILTER_GROUP=(&(mailGroupMember=%s))
       - LDAP_QUERY_FILTER_ALIAS=(&(mail=%s)(&(objectClass=person)(memberof=cn=mail,ou=groups,dc=home)))
@@ -40,22 +40,21 @@ services:
       - SASLAUTHD_MECHANISMS=ldap
       - SASLAUTHD_LDAP_SERVER=ldap
       - SASLAUTHD_LDAP_BIND_DN=cn=admin,dc=home
-      - SASLAUTHD_LDAP_PASSWORD={{LDAP_ADMIN_PASSWORD}}
+      - SASLAUTHD_LDAP_PASSWORD=admin
       - SASLAUTHD_LDAP_SEARCH_BASE=ou=people,dc=home
       - SASLAUTHD_LDAP_FILTER=(&(cn=%U)(&(objectClass=person)(memberof=cn=mail,ou=groups,dc=home)))
-      - POSTMASTER_ADDRESS={{POSTMASTER_ADDRESS}}
+      - POSTMASTER_ADDRESS=postmaster@bouts.me
       - ENABLE_MANAGESIEVE=1
       - SSL_TYPE=manual
       - SSL_CERT_PATH=/acme/certs/mail.bouts.me.pem
       - SSL_KEY_PATH=/acme/certs/mail.bouts.me.pem
-      - REPORT_RECIPIENT=1
     cap_add:
       - NET_ADMIN
     labels:
       - traefik.enable=false
 
   rainloop:
-    image: no-cloud.fr/maestro/rainloop
+    image: hardware/rainloop
     container_name: rainloop
     networks:
       - rainloop
@@ -64,8 +63,6 @@ services:
       - rainloop-db
     volumes:
       - rainloop-data:/rainloop/data
-    environment:
-      - ENABLE_FAIL2BAN=1
     labels:
       - traefik.port=8888
       - traefik.frontend.rule=Host:mail.bouts.me

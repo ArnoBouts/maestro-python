@@ -1,12 +1,17 @@
 version: '2'
 
 services:
+
   maestro:
-    image: no-cloud.fr/maestro-python
+    image: no-cloud.fr/maestro:latest
     container_name: maestro
+    restart: always
+    working_dir: /
     networks:
       - ldap
       - traefik
+    volumes_from:
+      - maestro-gui
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - maestro:/maestro/services
@@ -14,18 +19,18 @@ services:
       - LDAP_HOST=ldap
       - LDAP_PORT=389
       - LDAP_ADMIN_DN=cn=admin,dc=home
-      - LDAP_ADMIN_PASSWORD={{LDAP_ADMIN_PASSWORD}}
-      - MAESTRO_DOMAIN={{MAESTRO_DOMAIN}}
-      - NOTIFY={{MAESTRO_NOTIFY}}
-      - NOTIFY_JID={{MAESTRO_NOTIFY_JID}}
-      - NOTIFY_PASSWORD={{MAESTRO_NOTIFY_PASSWORD}}
-      - NOTIFY_TO={{MAESTRO_NOTIFY_TO}}
+      - LDAP_ADMIN_PASSWORD=admin
+      - MAESTRO_DOMAIN=bouts.me
     labels:
-      - traefik.port=5000
-      - traefik.frontend.rule=Host:maestro.{{MAESTRO_DOMAIN}}
+      - traefik.port=8888
+      - traefik.frontend.rule=Host:maestro.bouts.me
       - traefik.frontend.passHostHeader=true
       - traefik.frontend.entryPoints=http,https
       - traefik.docker.network=traefik
+
+  maestro-gui:
+    image: no-cloud.fr/maestro/gui:latest
+    container_name: maestro-gui
 
   backup:
     image: no-cloud.fr/maestro/borg
@@ -33,13 +38,13 @@ services:
     volumes:
       - maestro:/maestro
     environment:
-      - SSHFS={{MAESTRO_SSHFS}}
-      - SSHFS_PASSWORD={{MAESTRO_SSHFS_PASSWORD}}
+      - SSHFS=stoub@home.no-cloud.fr:/home/stoub/backup
+      - SSHFS_PASSWORD=selenia
       - BACKUP_DIRS=/maestro
       - EXTRACT_TO=/maestro/tmp
       - SSHFS_REPO=maestro
       - ARCHIVE_NAME=maestro
-      - BORG_PASSPHRASE={{MAESTRO_BACKUP_PASSPHRASE}}
+      - BORG_PASSPHRASE=unephrasesecrete
     cap_add:
       - SYS_ADMIN
     devices:
@@ -47,12 +52,16 @@ services:
     security_opt:
       - apparmor:unconfined
 
-networks:
-  ldap:
-    external: true
-  traefik:
-    external: true
-
 volumes:
+  data:
+    driver: local
   maestro:
     external: true
+
+networks:
+  ldap:
+    external:
+      name: ldap
+  traefik:
+    external:
+      name: traefik

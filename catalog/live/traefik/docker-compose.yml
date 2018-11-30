@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+  traefik:
+    image: traefik
+    container_name: traefik
+    networks:
+      - traefik
+    ports:
+      - 80:80
+      - 443:443
+    command:
+      - --loglevel=DEBUG
+      - --accesslog.filepath=/dev/stdout
+      - --web=true
+      - --docker
+      - --docker.domain=domain.local
+      - --acme=true
+      - --acme.storage=/etc/traefik/acme/acme.json
+      - --acme.entrypoint=https
+      - --acme.httpchallenge.entrypoint=http
+      - --acme.ondemand=false
+      - --acme.onhostrule=true
+      - --acme.acmelogging=true
+      - --entryPoints=Name:https Address::443 TLS
+      - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
+      - --defaultentrypoints=http,https
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - acme:/etc/traefik/acme
+    labels:
+#      - traefik.enable=false
+      - traefik.port=8080
+      - traefik.frontend.rule=Host:traefik.bouts.me
+      - traefik.frontend.passHostHeader=true
+      - traefik.frontend.entryPoints=http,https
+
+  acme:
+    image: no-cloud.fr/maestro/acme
+    container_name: acme
+    volumes:
+      - acme:/acme
+
+volumes:
+  acme:
+    driver: local
+
+networks:
+  traefik:
+    external:
+      name: traefik

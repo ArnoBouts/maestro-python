@@ -1,0 +1,77 @@
+services:
+  firefox:
+    name: firefox
+    enable: true
+    checksum: 9aadb65fed17e02224132e51ed0b1f13a10d46d1c0c558c10d61f16dbd045904
+    params: {}
+  guacamole:
+    name: guacamole
+    enable: true
+    checksum: cccba6527da58fd2088e2d0b9cba4903b25af9b2f24a3d2f19bbfc21bfd6c5b3
+    params: {}
+  jsxc:
+    name: jsxc
+    enable: true
+    checksum: a49b27894b8b68ed1df3bbb37b82e139a6143605028b61edf2046633799038b5
+    params: {}
+  kresus:
+    name: kresus
+    enable: true
+    checksum: fd1dc7353e303dc6ac3202870ce13acefb6eb5492d733c0efba82d30989195f0
+    params: {}
+  ldap:
+    name: ldap
+    enable: true
+    checksum: 6a533ffeccd40b70885daa20a46be4813cc272c009feafb20bec104f5aa09282
+    params: {}
+  maestro:
+    name: maestro
+    enable: true
+    checksum: 1b0ce6208fe2797ef4eb633c3f3e205d7a5c8fceaeef8cb64b6808057a162e30
+    params:
+      LDAP_ADMIN_PASSWORD: admin
+      MAESTRO_DOMAIN: bouts.me
+      MAESTRO_SSHFS: stoub@home.no-cloud.fr:/home/stoub/backup
+      MAESTRO_SSHFS_PASSWORD: selenia
+      MAESTRO_BACKUP_PASSPHRASE: unephrasesecrete
+      MAESTRO_NOTIFY: true
+      MAESTRO_NOTIFY_JID: maestro@bouts.me
+      MAESTRO_NOTIFY_PASSWORD: maestro
+      MAESTRO_NOTIFY_TO: arnaud@bouts.me
+  maestro-updater:
+    name: maestro-updater
+    enable: false
+    checksum: 4564172f55766f6c648f50fbef65a850ddb0703f4a61be7387b89df6eba67a0c
+    params: {}
+  mail:
+    name: mail
+    enable: true
+    checksum: d3ea39e227c74a0270692d1708d407dfe1f8a9046ff8bf3050e4dda4267b415c
+    params:
+      POSTMASTER_ADDRESS: arnaud@bouts.me
+  nextcloud:
+    name: nextcloud
+    enable: true
+    checksum: eeca241d96cda25670f3effd17bf0384429f14ff89651d3eeb9266b0bbb1fed4
+    params:
+      ADMIN_PASSWORD: admin
+      ADMIN_USER: admin
+  prosody:
+    name: prosody
+    enable: true
+    checksum: 28a6b9ac0b14f6f1aa63a34677247d84a69e6ea159b7fecc62554534c2971b73
+    params: {}
+  pyload:
+    name: pyload
+    enable: true
+    checksum: 4a4cccaeaa9bf9c606c1fbb823f01100a71532d85b601e16acfa67452b6c6563
+    params: {}
+  traefik:
+    name: traefik
+    enable: true
+    checksum: 0ea98d087ebdd388b6bc1eb43406fab570f620ebfbdd7496cef0deb154c15f58
+    params: {}
+backup:
+  sshfs:
+    host: stoub@home.no-cloud.fr/home/stoub/backup
+    password: selenia

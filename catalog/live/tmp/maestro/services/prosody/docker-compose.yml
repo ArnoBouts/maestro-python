@@ -3,21 +3,22 @@ version: '2'
 services:
 
   prosody-db:
-    image: postgres
+    image: mariadb:10
     container_name: prosody-db
     networks:
       - prosody
     environment:
-      - POSTGRES_DB=prosody
-      - POSTGRES_USER=prosody
-      - POSTGRES_PASSWORD=prosody
+      - MYSQL_DATABASE=prosody
+      - MYSQL_USER=prosody
+      - MYSQL_PASSWORD=prosody
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
     volumes:
-      - prosody-db:/var/lib/postgresql/data
+      - prosody-data:/var/lib/mysql
     labels:
       - traefik.enable=false
 
   prosody:
-    image: no-cloud.fr/maestro/prosody
+    image: no-cloud.fr/maestro/prosody:0.1
     container_name: prosody
     networks:
       prosody:
@@ -36,14 +37,14 @@ services:
     volumes:
       - traefik_acme:/acme
     environment:
-      - DOMAIN={{MAESTRO_DOMAIN}}
-      - LDAP_ADMIN_DN={{LDAP_ADMIN_DN}}
-      - LDAP_ADMIN_PASSWORD={{LDAP_ADMIN_PASSWORD}}
+      - DOMAIN=bouts.me
+      - LDAP_ADMIN_DN=cn=admin,dc=home
+      - LDAP_ADMIN_PASSWORD=admin
     labels:
       - traefik.port=5280
       - traefik.frontend.entryPoints=http,https
       - traefik.frontend.passHostHeader=true
-      - traefik.frontend.rule=Host:xmpp.{{MAESTRO_DOMAIN}}
+      - traefik.frontend.rule=Host:xmpp.bouts.me
       - traefik.docker.network=traefik
     links:
       - prosody-db
@@ -54,7 +55,7 @@ services:
     networks:
       - prosody
     environment:
-      - DOMAIN={{MAESTRO_DOMAIN}}
+      - DOMAIN=bouts.me
     volumes:
       - prosody-data:/var/lib/spectrum2
     links:
@@ -65,8 +66,6 @@ services:
 
 volumes:
   prosody-data:
-    driver: local
-  prosody-db:
     driver: local
   traefik_acme:
     external: true

@@ -15,6 +15,7 @@ services:
       - prosody-db:/var/lib/postgresql/data
     labels:
       - traefik.enable=false
+      
 
   prosody:
     image: no-cloud.fr/maestro/prosody
@@ -36,14 +37,14 @@ services:
     volumes:
       - traefik_acme:/acme
     environment:
-      - DOMAIN={{MAESTRO_DOMAIN}}
-      - LDAP_ADMIN_DN={{LDAP_ADMIN_DN}}
-      - LDAP_ADMIN_PASSWORD={{LDAP_ADMIN_PASSWORD}}
+      - DOMAIN=bouts.me
+      - LDAP_ADMIN_DN=cn=admin,dc=home
+      - LDAP_ADMIN_PASSWORD=admin
     labels:
       - traefik.port=5280
       - traefik.frontend.entryPoints=http,https
       - traefik.frontend.passHostHeader=true
-      - traefik.frontend.rule=Host:xmpp.{{MAESTRO_DOMAIN}}
+      - traefik.frontend.rule=Host:xmpp.bouts.me
       - traefik.docker.network=traefik
     links:
       - prosody-db
@@ -54,7 +55,9 @@ services:
     networks:
       - prosody
     environment:
-      - DOMAIN={{MAESTRO_DOMAIN}}
+      - DOMAIN=bouts.me
+      - PURPLE_UNSAFE_DEBUG=1
+      - PURPLE_VERBOSE_DEBUG=1
     volumes:
       - prosody-data:/var/lib/spectrum2
     links:

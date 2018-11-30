@@ -19,6 +19,12 @@ services:
         required: false
       MAESTRO_NOTIFY_TO:
         required: false
+      MAESTRO_SSHFS:
+        required: false
+      MAESTRO_SSHFS_PASSWORD:
+        required: false
+      MAESTRO_BACKUP_PASSPHRASE:
+        required: false
     backup:
       - service: backup
         command: [create]
@@ -57,6 +63,9 @@ services:
   mail:
     display_name: Mail Server
     ldap_group: mail
+    params:
+      POSTMASTER_ADDRESS:
+        required: true
     install:
       - service: mail
         command: [maestro-generate-dkim-config]
