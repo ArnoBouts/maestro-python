@@ -27,6 +27,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - acme:/etc/traefik/acme
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
     labels:
       - traefik.enable=false
 
@@ -36,6 +41,13 @@ services:
     network_mode: "none"
     volumes:
       - acme:/acme
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
+    labels:
+      - traefik.enable=false
 
 volumes:
   acme:

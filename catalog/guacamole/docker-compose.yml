@@ -24,6 +24,11 @@ services:
       - MYSQL_DATABASE=guacamole
       - MYSQL_USER=guacamole
       - MYSQL_PASSWORD=guacamole
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
     labels:
       - traefik.port=8080
       - traefik.frontend.rule=Host:guacamole.{{MAESTRO_DOMAIN}}
@@ -43,6 +48,13 @@ services:
       - MYSQL_USER=guacamole
       - MYSQL_PASSWORD=guacamole
       - MYSQL_RANDOM_ROOT_PASSWORD=true
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
+    labels:
+      - traefik.enable=false
 
 networks:
   guacamole:

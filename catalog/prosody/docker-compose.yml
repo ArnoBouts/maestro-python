@@ -13,6 +13,11 @@ services:
       - POSTGRES_PASSWORD=prosody
     volumes:
       - prosody-db:/var/lib/postgresql/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
     labels:
       - traefik.enable=false
 
@@ -39,6 +44,11 @@ services:
       - DOMAIN={{MAESTRO_DOMAIN}}
       - LDAP_ADMIN_DN={{LDAP_ADMIN_DN}}
       - LDAP_ADMIN_PASSWORD={{LDAP_ADMIN_PASSWORD}}
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
     labels:
       - traefik.port=5280
       - traefik.frontend.entryPoints=http,https
@@ -60,6 +70,11 @@ services:
     links:
       - prosody
       - prosody-db
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
     labels:
       - traefik.enable=false
 

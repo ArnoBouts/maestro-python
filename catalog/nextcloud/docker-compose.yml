@@ -26,6 +26,11 @@ services:
       - nextcloud-config:/var/www/html/config
       - nextcloud-apps:/var/www/html/custom_apps
       - media:/media
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
     labels:
       - traefik.port=80
       - traefik.frontend.rule=Host:nextcloud.{{MAESTRO_DOMAIN}}
@@ -46,6 +51,11 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_PASSWORD=nextcloud
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
     labels:
       - traefik.enable=false
 

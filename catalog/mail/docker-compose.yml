@@ -51,6 +51,11 @@ services:
       - REPORT_RECIPIENT=1
     cap_add:
       - NET_ADMIN
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
     labels:
       - traefik.enable=false
 
@@ -66,6 +71,11 @@ services:
       - rainloop-data:/rainloop/data
     environment:
       - ENABLE_FAIL2BAN=1
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
     labels:
       - traefik.port=8888
       - traefik.frontend.rule=Host:mail.bouts.me
@@ -85,6 +95,13 @@ services:
       - MYSQL_DATABASE=rainloop
       - MYSQL_USER=rainloop
       - MYSQL_PASSWORD=rainloop
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "5"
+    labels:
+      - traefik.enable=false
 
 
 volumes:
