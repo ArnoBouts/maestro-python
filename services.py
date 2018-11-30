@@ -100,6 +100,7 @@ def composeUpgrade(service):
 
     if updater is None:
         performComposeUpdate(service)
+        return
 
     if not updater in s['services']:
         install({'name': updater, 'params': {}})
