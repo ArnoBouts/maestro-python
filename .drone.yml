@@ -2,7 +2,7 @@ pipeline:
   publish:
     image: plugins/docker
     registry: no-cloud.fr
-    repo: no-cloud.fr/maestro-python
+    repo: no-cloud.fr/maestro
     tag: latest
     file: Dockerfile
 
