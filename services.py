@@ -110,7 +110,9 @@ def composeUpgrade(service):
     comp.up(w, s['services'][updater])
 
 def performComposeUpdate(service):
-    comp.down(w, service, False, False)
+    if service['name'] != 'traefik':
+        comp.down(w, service, False, False)
+
     service['params'] = computeParams(service, service['params'])
 
     configure(service)
@@ -122,7 +124,6 @@ def performComposeUpdate(service):
     log.info('Compose file of service %s updated', service['name'])
 
     xmpp.Send('%s configuration updated' % (service['name']))
-
 
 def restart(service_name):
     service = s['services'][service_name]
