@@ -1,9 +1,14 @@
+import logging
 import os
 import slixmpp
+
+log = logging.getLogger(__name__)
 
 def Send(message):
 
     if 'NOTIFY' in os.environ and os.environ['NOTIFY'] == 'true':
+
+        log.debug('Send notification %s', message)
 
         jid = os.environ['NOTIFY_JID']
         password = os.environ['NOTIFY_PASSWORD']

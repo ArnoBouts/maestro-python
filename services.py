@@ -52,6 +52,8 @@ def save():
 
 def update():
     log.debug('Update')
+    xmpp.Send('Update')
+
     toComposeUpgrade = []
     toUpgrade = []
 
