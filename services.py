@@ -52,7 +52,6 @@ def save():
 
 def update():
     log.debug('Update')
-    xmpp.Send('Update')
 
     toComposeUpgrade = []
     toUpgrade = []
@@ -80,6 +79,7 @@ def upgrade(service):
 
     if updater is None:
         comp.up(w, service)
+        xmpp.Send('%s upgraded' % (service['name']))
         return
 
     if not updater in s['services']:
